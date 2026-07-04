@@ -1,0 +1,18 @@
+# Flutter platform folders (ignore from language stats)
+android/** linguist-vendored
+ios/** linguist-vendored
+linux/** linguist-vendored
+windows/** linguist-vendored
+macos/** linguist-vendored
+web/** linguist-vendored
+
+# native build system files
+*.cpp linguist-vendored
+*.cc linguist-vendored
+*.h linguist-vendored
+*.mm linguist-vendored
+*.swift linguist-vendored
+*.cmake linguist-vendored
+CMakeLists.txt linguist-vendored
+*.gradle linguist-vendored
+*.kts linguist-vendored

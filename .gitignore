@@ -1,0 +1,102 @@
+# Miscellaneous
+**.class
+**.log
+**.pyc
+**.swp
+**.DS_Store
+**.atom/
+**.build/
+**.buildlog/
+**.history
+**.svn/
+**.swiftpm/
+**migrate_working_dir/
+**/shelf/
+**/workspace.xml
+
+# IntelliJ and VS Code related
+**.iml
+**.ipr
+**.iws
+**.idea/
+**/.vscode/
+
+# Signing keys (CRITICAL SECURITY)
+**.jks
+**.keystore
+**key.properties
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub-cache/
+**/.pub/
+**/build/
+**/coverage/
+**/.generated/
+
+# Symbolication related
+**app.*.symbols
+
+# Obfuscation related
+**app.*.map.json
+
+# Android Studio will place build artifacts here
+**/android/.gradle/
+**/android/local.properties
+**/android/**/gradle-wrapper.jar
+**/android/**/GeneratedPluginRegistrant.*
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/build/
+
+# iOS/CocoaPods artifacts
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/DerivedData/
+**/ios/build/
+**/.plugin_symlinks/
+
+# Environment files
+**.env
+**.env.*
+
+# Специфичный мусор Xcode
+**/xcuserdata/
+**/*.mode1v3
+**/*.mode2v3
+**/*.moved-aside
+**/*.pbxuser
+**/*.perspectivev3
+**/Icon?
+**/profile
+**/ServiceDefinitions.json
+**/Runner/GeneratedPluginRegistrant.*
+**/Flutter/Flutter.podspec
+**/Flutter/app.flx
+**/Flutter/app.zip
+**/Flutter/flutter_assets/
+
+# Специфичные логи и кэш Android/Gradle
+**/gradlew
+**/gradlew.bat
+**/captures/
+**/.cxx/
+**/GeneratedPluginRegistrant.java
+
+# Firebase
+firebase-debug.log
+**/google-services.json
+**/GoogleService-Info.plist
+**/firebase_options.dart
+**.firebase/
