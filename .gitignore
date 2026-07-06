@@ -100,3 +100,4 @@ firebase-debug.log
 **/GoogleService-Info.plist
 **/firebase_options.dart
 **.firebase/
+**/.firebaserc
