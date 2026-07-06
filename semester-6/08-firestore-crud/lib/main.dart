@@ -35,108 +35,116 @@ class _MyHomePageState extends State<MyHomePage> {
   final _notes = FirebaseFirestore.instance.collection('notes');
 
   String? _selectedDocId;
-  Map<String, dynamic>? _selectedNoteData;
 
-  void _selectNote(String docId, Map<String, dynamic> data) {
-    setState(() {
-      _selectedDocId = docId;
-      _selectedNoteData = data;
-    });
-  }
+  static const int modeCreate = 1;
+  static const int modeEdit = 2;
+  static const int modeView = 3;
 
-  Future<void> _addNote(BuildContext context) async {
-    final titleController = TextEditingController();
-    final textController = TextEditingController();
-
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Create Note'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            TextField(
-              controller: textController,
-              decoration: const InputDecoration(labelText: 'Text'),
-              minLines: 2,
-              maxLines: 5,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-    if (result != true) return;
-
-    await _notes.add({
-      'title': titleController.text,
-      'text': textController.text,
-      'createdAt': FieldValue.serverTimestamp(),
-    });
-  }
-
-  Future<void> _editNote(BuildContext context, String docId, Map<String, dynamic> data) async {
-
+  Future<void> _getNote(
+    int dialogMode,
+    String docId,
+    Map<String, dynamic> data,
+  ) async {
     final titleController = TextEditingController(text: data['title']);
     final textController = TextEditingController(text: data['text']);
 
+    String? errorMessage;
+
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Note'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(hintText: 'Title'),
-            ),
-            TextField(
-              controller: textController,
-              decoration: const InputDecoration(hintText: 'Text'),
-              minLines: 2,
-              maxLines: 5,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Save'),
-          ),
-        ],
-      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text(
+                dialogMode == modeCreate
+                    ? "Create Note"
+                    : dialogMode == modeEdit
+                    ? "Edit Note"
+                    : "${data['title']}",
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: titleController,
+                    readOnly: dialogMode == modeView,
+                    decoration: const InputDecoration(labelText: 'Title'),
+                  ),
+                  TextField(
+                    controller: textController,
+                    readOnly: dialogMode == modeView,
+                    decoration: const InputDecoration(labelText: 'Text'),
+                    minLines: 2,
+                    maxLines: 5,
+                  ),
+                  if (dialogMode == modeView || dialogMode == modeEdit) ...[
+                    Text("Created at: ${data['createdAt']?.toDate() ?? '-'}"),
+                    Text("Updated at: ${data['updatedAt']?.toDate() ?? '-'}"),
+                  ],
+                  if (errorMessage?.isNotEmpty == true) ...[
+                    Text("Error: $errorMessage",
+                    style: const TextStyle(color: Colors.red,),
+                    ),
+                  ],
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (dialogMode == modeCreate || dialogMode == modeEdit) {
+                      if (titleController.text.trim().isEmpty ||
+                          textController.text.trim().isEmpty) {
+                        setDialogState(() {
+                          errorMessage = 'Fields are blank';
+                        });
+                      } else {
+                        Navigator.pop(context, true);
+                      }
+                    } else {
+                      final deleted = await _deleteNote(docId);
+                      if (!context.mounted) return;
+                      if (deleted) {
+                        Navigator.pop(context, true);
+                      }
+                    }
+                  },
+                  child: Text(
+                    dialogMode == modeCreate
+                        ? "Create"
+                        : dialogMode == modeEdit
+                        ? "Edit note"
+                        : "Delete note",
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
+
     if (result != true) return;
-
-    final newTitle = titleController.text.trim();
-    final newText = textController.text.trim();
-
-    await _notes.doc(docId).update({
-      'title': newTitle,
-      'text': newText,
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
+    if (dialogMode == modeCreate) {
+      await _notes.add({
+        'title': titleController.text.trim(),
+        'text': textController.text.trim(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } else if (dialogMode == modeEdit) {
+      await _notes.doc(docId).update({
+        'title': titleController.text.trim(),
+        'text': textController.text.trim(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    }
   }
 
-  Future<void> _deleteNote(BuildContext context, String docId) async {
+  Future<bool> _deleteNote(String docId) async {
     final ok = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -155,17 +163,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    if (ok != true) return;
+    if (ok != true) return false;
 
     await _notes.doc(docId).delete();
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot>(
       stream: _notes.snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
         final notes = snapshot.data!.docs;
         return Scaffold(
           appBar: AppBar(
@@ -182,11 +193,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     final isSelected = data.id == _selectedDocId;
 
                     return ListTile(
-                      title: Text(data.data()['title'] ?? ''),
-                      subtitle: Text(data.data()['text'] ?? ''),
+                      title: Text(data['title'] ?? ''),
+                      subtitle: Text(data['text'] ?? ''),
                       selected: isSelected,
-                      selectedTileColor: Colors.blue.withOpacity(0.1),
-                      onTap: () => _selectNote(data.id, data.data())
+                      selectedTileColor: Colors.blue.withValues(alpha: 0.1),
+                      onTap: () {
+                        setState(() {
+                          _selectedDocId = isSelected ? null : data.id;
+                        });
+                      },
                     );
                   },
                 ),
@@ -197,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               FloatingActionButton(
-                onPressed: () => _addNote(context),
+                onPressed: () => _getNote(modeCreate, '', {}),
                 tooltip: 'Create',
                 child: const Icon(Icons.add_circle),
               ),
@@ -206,7 +221,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _selectedDocId == null
                     ? null
                     : () {
-                  _editNote(context, _selectedDocId!, _selectedNoteData!);
+                        final selectedDoc = notes.firstWhere(
+                          (d) => d.id == _selectedDocId,
+                        );
+                        _getNote(
+                          modeEdit,
+                          selectedDoc.id,
+                          selectedDoc.data() as Map<String, dynamic>,
+                        );
                       },
                 tooltip: 'Edit',
                 child: const Icon(Icons.edit),
@@ -216,10 +238,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _selectedDocId == null
                     ? null
                     : () {
-                        _deleteNote(context, _selectedDocId!);
+                        final selectedDoc = notes.firstWhere(
+                          (d) => d.id == _selectedDocId,
+                        );
+                        _getNote(
+                          modeView,
+                          selectedDoc.id,
+                          selectedDoc.data() as Map<String, dynamic>,
+                        );
                       },
                 tooltip: 'Delete',
-                child: const Icon(Icons.delete),
+                child: const Icon(Icons.open_in_new),
               ),
               const SizedBox(height: 12),
             ],
