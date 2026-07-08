@@ -1,4 +1,4 @@
-<h1 align="center">📱 Firestore Crud V2 </h1>
+<h1 align="center">📱 Firestore CRUD V2 </h1>
 
 <p align="center">
 A simple Flutter application that uses Firebase Authentication for user registration and login, and Cloud Firestore to store and manage data for a demo e-commerce application.

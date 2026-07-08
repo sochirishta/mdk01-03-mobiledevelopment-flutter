@@ -10,15 +10,16 @@ The codebase is primarily based on college guidelines.
 ## .✦ ݁˖ Studies
 
 #### - **[semester-5](./semester-5)**
-- **[01-settings-bloc](./semester-5/01-settings-bloc)** — Settings App (BLoC + SharedPreferences)
-- **[02-gesture-tracker-app](./semester-5/02-gesture-tracker-app)** — Gesture Tracker App using GestureDetector
+- **[01-settings-bloc](./semester-5/01-settings-bloc)** — Settings App (`BLoC` + `SharedPreferences`)
+- **[02-gesture-tracker-app](./semester-5/02-gesture-tracker-app)** — Gesture Tracker App using `GestureDetector`
 - **[03-avatar-storage-app](./semester-5/03-avatar-storage-app)** — Avatar Storage App using persistent image upload
-- **[04-notes-bloc](./semester-5/04-notes-bloc)** — Notes BLoC App (CRUD + Theme switching using ThemeData)
-- **[05-firebase-auth](./semester-5/05-firebase-auth)** — Firebase Auth App (login/registration using FirebaseAuth, StreamBuilder, authStateChanges)
+- **[04-notes-bloc](./semester-5/04-notes-bloc)** — Notes BLoC App (`CRUD` + Theme switching using `ThemeData`)
+- **[05-firebase-auth](./semester-5/05-firebase-auth)** — Firebase Auth App (login/registration using `FirebaseAuth`, `StreamBuilder`, `authStateChanges`)
 #### - **[semester-6](./semester-6)**
-- **[06-scrolling-post-feed](./semester-6/06-scrolling-post-feed)** — Scrolling Post Feed (Infinite scroll using generate list)
-- **[07-animated-widget](./semester-6/07-animated-widget)** — Animated Widget (Rectangle widget that change size and color by tap)
-- **[08-firestore-crud](./semester-6/08-firestore-crud)** — Firestore Crud (Flutter, Firestore database and CRUD operations)
+- **[06-scrolling-post-feed](./semester-6/06-scrolling-post-feed)** — Scrolling Post Feed (Infinite scroll using `List.generate`)
+- **[07-animated-widget](./semester-6/07-animated-widget)** — Animated Widget (Rectangle widget that changes size and color on tap)
+- **[08-firestore-crud-v1](./semester-6/08-firestore-crud-v1)** — Firestore CRUD (`Flutter`, `Firestore Database` and `CRUD` operations)
+- **[08-firestore-crud-v2](./semester-6/08-firestore-crud-v2)** — Simple e-commerce app (`Flutter`, `Firebase Auth`, `Firestore Database` and `CRUD` operations)
 
 ---
 
@@ -40,11 +41,13 @@ flutter run
 ## Notes
 
 All dependencies are included, except Firebase configuration files (must be generated locally).
-Firebase config files are not tracked in git.
+Firebase configuration files (`firebase_options.dart`, `google-services.json`, etc.) are not tracked in git.
 Each user must generate their own Firebase configuration.
-For the Firestore CRUD project, you must create a Firestore database in your Firebase project.
+For the Firestore CRUD project, you must create a `Cloud Firestore` database in your Firebase project.
 
-### Firebase setup (required for [05-firebase-auth](./semester-5/05-firebase-auth) and [08-firestore-crud](./semester-6/08-firestore-crud))
+*For your Firebase projects, you must separately enable `Firebase Authentication` and create a `Cloud Firestore` database inside the console.*
+
+### Firebase setup (required for [05-firebase-auth](./semester-5/05-firebase-auth), [08-firestore-crud-v1](./semester-6/08-firestore-crud-v1), and [08-firestore-crud-v2](./semester-6/08-firestore-crud-v2))
 
 1. Create a Firebase project: https://console.firebase.google.com
 2. In the Flutter project folder, run:
@@ -71,7 +74,7 @@ await Firebase.initializeApp(
 
 5. In the Firebase Console, under the **Authentication** section of your project summary, you can view the users who have registered through the app.
 
-### Firestore setup (required for [08-firestore-crud](./semester-6/08-firestore-crud))
+### Firestore setup (required for [08-firestore-crud-v1](./semester-6/08-firestore-crud-v1) and [08-firestore-crud-v2](./semester-6/08-firestore-crud-v2))
 
 1. Create a Firestore database for your Firebase project
 2. To install the FlutterFire CLI use:
