@@ -101,3 +101,7 @@ firebase-debug.log
 **/firebase_options.dart
 **.firebase/
 **/.firebaserc
+**/firebase.json
+**firebase.json
+firebase.json
+.firebaserc
