@@ -105,3 +105,41 @@ firebase-debug.log
 **firebase.json
 firebase.json
 .firebaserc
+
+# Backend (результаты сборки .NET и настройки запуска)
+**/bin/
+**/bin
+**/obj
+**/charts
+
+**/node_modules
+**/npm-debug.log
+**/secrets.dev.yaml
+**/values.dev.yaml
+
+**/obj/
+**/launchSettings.json
+**.user
+**.suo
+**.log
+
+# Rider
+**/.idea_modules/
+**/.fleet/
+
+# NuGet
+**/packages/
+*.nupkg
+
+# Publish
+**/publish/
+**/Publish/
+
+# Flutter
+**/.fvm/
+**/.melos_tool/
+
+# macOS
+**/.Trash/
+**/.AppleDouble
+**/.LSOverride

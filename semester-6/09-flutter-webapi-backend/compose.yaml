@@ -1,0 +1,49 @@
+﻿services:
+  db:
+    image: postgres:17-alpine
+    container_name: flutter-webapi-db
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME_PGSQL}
+      POSTGRES_PASSWORD: ${DB_PASSWORD_PGSQL}
+      POSTGRES_DB: ${DB_NAME_PGSQL}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./flutter-web-api/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME_PGSQL} -d ${DB_NAME_PGSQL}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - backend
+  
+  flutter-web-api:
+    image: flutter-web-api
+    container_name: flutter_webapi
+    restart: always
+    build:
+      context: .
+      dockerfile: flutter-web-api/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    env_file:
+      - ./.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=${DB_HOST_PGSQL};Port=${DB_PORT_PGSQL};Database=${DB_NAME_PGSQL};Username=${DB_USERNAME_PGSQL};Password=${DB_PASSWORD_PGSQL};
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
