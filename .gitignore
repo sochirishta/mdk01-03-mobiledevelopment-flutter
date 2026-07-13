@@ -48,7 +48,7 @@
 # Android Studio will place build artifacts here
 **/android/.gradle/
 **/android/local.properties
-**/android/**/gradle-wrapper.jar
+## **/android/**/gradle-wrapper.jar
 **/android/**/GeneratedPluginRegistrant.*
 **/android/app/debug/
 **/android/app/profile/
@@ -88,8 +88,8 @@
 **/Flutter/flutter_assets/
 
 # Специфичные логи и кэш Android/Gradle
-**/gradlew
-**/gradlew.bat
+## **/gradlew
+## **/gradlew.bat
 **/captures/
 **/.cxx/
 **/GeneratedPluginRegistrant.java
