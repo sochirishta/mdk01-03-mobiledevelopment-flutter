@@ -19,7 +19,9 @@ The codebase is primarily based on college guidelines.
 - **[06-scrolling-post-feed](./semester-6/06-scrolling-post-feed)** — Scrolling Post Feed (Infinite scroll using `List.generate`)
 - **[07-animated-widget](./semester-6/07-animated-widget)** — Animated Widget (Rectangle widget that changes size and color on tap)
 - **[08-firestore-crud-v1](./semester-6/08-firestore-crud-v1)** — Firestore CRUD (`Flutter`, `Firestore Database` and `CRUD` operations)
-- **[08-firestore-crud-v2](./semester-6/08-firestore-crud-v2)** — Simple e-commerce app (`Flutter`, `Firebase Auth`, `Firestore Database` and `CRUD` operations)
+- **[08-firestore-crud-v2](./semester-6/08-firestore-crud-v2)** — MVP Catalog, Cart and Auth app (`Flutter`, `Firebase Auth`, `Firestore Database` and `CRUD` operations)
+- **[09-flutter-webapi-backend](./semester-6/09-flutter-webapi-backend)** — `ASP.NET Core` Web API on `PostgreSQL` database serving as the `CRUD` infrastructure for the Flutter mobile client (built and run via `Docker Compose`)
+- **[09-flutter-webapi-frontend](./semester-6/09-flutter-webapi-frontend)** — Flutter MVP Auth, Catalog and Cart to connect to the API
 
 ---
 
