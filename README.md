@@ -22,6 +22,7 @@ The codebase is primarily based on college guidelines.
 - **[08-firestore-crud-v2](./semester-6/08-firestore-crud-v2)** — MVP Catalog, Cart and Auth app (`Flutter`, `Firebase Auth`, `Firestore Database` and `CRUD` operations)
 - **[09-flutter-webapi-backend](./semester-6/09-flutter-webapi-backend)** — `ASP.NET Core` Web API on `PostgreSQL` database serving as the `CRUD` infrastructure for the Flutter mobile client (built and run via `Docker Compose`)
 - **[09-flutter-webapi-frontend](./semester-6/09-flutter-webapi-frontend)** — Flutter MVP Auth, Catalog and Cart to connect to the API
+- **[10-route-map](./semester-6/10-route-map)** — Route Map (Current Location, Build Direction, Save Directions, Directions History) 
 
 ---
 
